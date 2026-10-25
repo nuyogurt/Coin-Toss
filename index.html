@@ -2,39 +2,106 @@
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Coin Toss</title>    
-    <link rel="shortcut icon" href="head.png">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+    <meta name="description" content="Flip a Rp1,000 coin with a 3D animation, adjustable odds, and live statistics." />
+    <meta name="theme-color" content="#0a0e1f" />
+    <title>Coin Toss</title>
+    <link rel="icon" href="head.png" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800&display=swap" />
     <link rel="stylesheet" href="style.css" />
   </head>
   <body>
-    <!-- Bubble -->
-    <div class="bubble-container" id="bubbleContainer"></div>
+    <!-- Background -->
+    <div class="bg" aria-hidden="true">
+      <span class="blob blob--1"></span>
+      <span class="blob blob--2"></span>
+      <span class="blob blob--3"></span>
+      <span class="grid"></span>
+    </div>
 
-    <div class="container">
+    <!-- Bubble -->
+    <div class="bubble-container" id="bubbleContainer" aria-hidden="true"></div>
+
+    <main class="card">
+      <header class="card__head">
+        <div>
+          <h1>Coin Toss</h1>
+          <p>Rp1,000 coin · Heads or Tails?</p>
+        </div>
+        <span class="total-pill" title="Total flips"><span id="totalCount">0</span> flips</span>
+      </header>
+
       <!-- Coin -->
-      <div class="coin">
-        <div class="head">
-          <img src="head.png"/>
+      <section class="stage" aria-label="Coin">
+        <div class="coin-wrap">
+          <div class="coin" id="coin">
+            <div class="face face--head"><img src="head.png" alt="Heads side" draggable="false" /></div>
+            <div class="face face--tail"><img src="tail.png" alt="Tails side" draggable="false" /></div>
+          </div>
         </div>
-        <div class="tail">
-          <img src="tail.png"/>
-        </div>
-      </div>
+        <div class="shadow" id="shadow"></div>
+        <div class="ripple" id="ripple"></div>
+      </section>
+
+      <p class="result" id="result" aria-live="polite">Press <b>FLIP</b> to start</p>
 
       <!-- Score Board -->
-      <div class="score-board">
-        <p id="head-count">ANGKA : 0</p>
-        <p id="tail-count">GAMBAR : 0</p>
+      <section class="score-board">
+        <div class="score score--head">
+          <span class="score__label">Heads</span>
+          <strong id="head-count">0</strong>
+          <span class="score__pct" id="head-pct">0%</span>
+        </div>
+        <div class="score score--tail">
+          <span class="score__label">Tails</span>
+          <strong id="tail-count">0</strong>
+          <span class="score__pct" id="tail-pct">0%</span>
+        </div>
+      </section>
+
+      <div class="actual" title="Actual results compared with the odds you set">
+        <div class="actual__bar">
+          <span class="actual__fill" id="actualFill"></span>
+          <span class="actual__target" id="actualTarget"></span>
+        </div>
+        <p class="actual__note"><span id="streakText">No flips yet</span></p>
       </div>
+
+      <!-- Probability -->
+      <section class="odds" aria-labelledby="oddsTitle">
+        <div class="odds__head">
+          <h2 id="oddsTitle">Set the odds</h2>
+          <output class="odds__value" id="oddsValue" for="oddsInput">Heads 50% · Tails 50%</output>
+        </div>
+        <input type="range" id="oddsInput" min="0" max="100" step="1" value="50" aria-label="Chance of heads (percent)" />
+        <div class="presets" role="group" aria-label="Quick odds presets">
+          <button class="preset" data-odds="50">50 : 50</button>
+          <button class="preset" data-odds="70">70 : 30</button>
+          <button class="preset" data-odds="30">30 : 70</button>
+          <button class="preset" data-odds="90">90 : 10</button>
+          <button class="preset" data-odds="10">10 : 90</button>
+        </div>
+      </section>
 
       <!-- Functional Buttons -->
       <div class="buttons">
-        <button id="flip-button">LEMPAR</button>
-        <button id="reset-button">RESET</button>
+        <button class="btn btn--primary" id="flip-button">FLIP</button>
+        <button class="btn btn--ghost" id="fast-button" title="Flip 10 times at once without animation">×10</button>
+        <button class="btn btn--danger" id="reset-button">RESET</button>
       </div>
-    </div>
-    
+
+      <!-- History -->
+      <section class="history">
+        <div class="history__head">
+          <h2>History</h2>
+          <span class="history__hint">Space = flip · R = reset</span>
+        </div>
+        <ol class="history__list" id="history" aria-label="Recent flips"></ol>
+      </section>
+    </main>
+
     <script src="app.js"></script>
   </body>
 </html>
